@@ -1,4 +1,4 @@
-export interface Album {
+export interface History {
     id: string;
     title: string;
     description: string;

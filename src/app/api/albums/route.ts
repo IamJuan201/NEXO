@@ -1,10 +1,12 @@
 import { supabase } from "@/lib/supabaseClient";
+import { Album } from "@/types/Album";
 import { NextResponse } from "next/server";
 
-console.log('valor de la URL:', JSON.stringify(process.env.SUPABASE_URL));
-
 export async function GET() { // De albums selecionalos todos
-    const { data, error } = await supabase.from('albums').select('*');
+    const { data, error } = await supabase
+    .from('albums')
+    .select('*')
+    .returns<Album[]>(); // Para el tipo de dato que devolvera, un array q trae todos los albums
 
     // si hay un error haz esto:
     if(error) { // Muestra el mensaje de error con que el problema es del server
