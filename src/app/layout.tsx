@@ -22,14 +22,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>
-        <header>
-          <Navbar></Navbar>
-        </header>
+      <body className="min-h-screen flex flex-col bg-neutral-950 text-neutral-50 antialiased m-0 p-0 relative overflow-x-hidden">
+          
+        <div className="absolute top-[-20%] left-[-10%] w-125 h-125 bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-[20%] right-[-10%] w-100 h-100 bg-[#D4AF37]/5 rounded-full blur-[100px] pointer-events-none"></div>
 
-        {children}
+        <Navbar />
+
+        <main className="grow">{children}</main>
         
-        <Footer></Footer>
+        <Footer />
       </body>
     </html>
   );
