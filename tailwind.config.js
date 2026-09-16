@@ -6,7 +6,13 @@ module.exports = {
     "./src/lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        // Enlazamos las variables CSS que creamos en el layout
+        sans: ['var(--font-inter)', 'sans-serif'],
+        title: ['var(--font-cinzel)', 'serif'],
+      },
+    },
   },
   plugins: [],
-}
+};

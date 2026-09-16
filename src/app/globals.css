@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Evita que la pantalla se mueva hacia los lados */
+  background-color: #000000; /* Asegura que el fondo sea negro absoluto */
+}
+
+/* Oculta el espacio del scrollbar en Chrome, Safari, Brave y Edge */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Oculta el espacio en Firefox */
+html {
+  scrollbar-width: none;
+}

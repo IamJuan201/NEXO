@@ -11,7 +11,7 @@ export default function Footer() {
 
         <div className="flex items-center justify-center gap-6 mt-1">
           <a 
-            href="https://instagram.com" 
+            href="https://instagram.com/iamjuan_201" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-2xl text-slate-400 hover:text-pink-500 transition-colors duration-200 cursor-pointer"
@@ -20,7 +20,7 @@ export default function Footer() {
           </a>
 
           <a 
-            href="https://tiktok.com" 
+            href="https://www.tiktok.com/@iam.juan201" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-2xl text-slate-400 hover:text-white transition-colors duration-200 cursor-pointer"
@@ -29,7 +29,7 @@ export default function Footer() {
           </a>
 
           <a 
-            href="https://youtube.com" 
+            href="https://www.youtube.com/@iamjuan1366" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-2xl text-slate-400 hover:text-red-500 transition-colors duration-200 cursor-pointer"
