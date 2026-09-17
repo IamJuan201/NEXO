@@ -43,7 +43,10 @@ export default function Home() {
       try {
         const { data, error } = await supabase
           .from("albums") // Asegúrate de que tu tabla en Supabase se llame exactamente "albums"
-          .select("*");
+          .select(`
+            *,
+            songs (id)
+            `);
 
         if (error) throw error;
         if (data) setAlbums(data);
@@ -169,16 +172,19 @@ export default function Home() {
                       {album.title}
                     </h3>
                     <p className="text-sm text-neutral-500 font-light mt-0.5">
-                      {album.songs || "0 canciones"}
+                      {album.songs ? `${album.songs.length} canciones` : "0 canciones"}
                     </p>
                   </div>
 
                   {/* Botón flotante interactivo */}
-                  <div className="absolute bottom-5 right-5 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300">
-                    <div className="w-8 h-8 rounded-full bg-[#D4AF37] text-neutral-950 flex items-center justify-center font-bold text-sm shadow-md cursor-pointer">
-                      <FaPlay />
+                  <Link href={`/albums/${album.id}`}
+                    className="absolute bottom-5 right-5 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-20"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[#EAB308] text-black flex items-center justify-center font-bold text-sm shadow-md hover:scale-110 transition-transform cursor-pointer">
+                      <FaPlay className="text-xs ml-0.5" />
                     </div>
-                  </div>
+                  </Link>
+
                 </div>
               );
             })}
