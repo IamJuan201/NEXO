@@ -3,6 +3,7 @@ import { Cinzel, Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { AudioProvider } from "@/context/AudioContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,12 +39,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           
         <div className="absolute top-[-20%] left-[-10%] w-125 h-125 bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute top-[20%] right-[-10%] w-100 h-100 bg-[#D4AF37]/5 rounded-full blur-[100px] pointer-events-none"></div>
+        <AudioProvider>
+          <Navbar />
 
-        <Navbar />
-
-        <main className="grow">{children}</main>
-        
-        <Footer />
+          <main className="grow">{children}</main>
+          
+          <Footer />
+        </AudioProvider>
       </body>
     </html>
   );
