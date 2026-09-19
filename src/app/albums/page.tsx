@@ -70,15 +70,16 @@ export default function AlbumsPage() {
           </div>
         ) : (
           /* CUADRÍCULA DE TODAS LAS CARÁTULAS */
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {albums.map((album) => {
               const dynamicGlow = albumGlowColors[album.title] || "hover:shadow-2xl hover:shadow-yellow-600/20";
 
               return (
-                <Link
-                  href={`/albums/${album.id}`} 
+                /* Toda la tarjeta ahora es un Link, así es clickeable en celular */
+                <Link 
+                  href={`/albums/${album.id}`}
                   key={album.id}
-                  className={`group relative bg-neutral-900/30 border border-neutral-800/60 rounded-2xl p-4 flex flex-col gap-4 hover:border-neutral-700/60 hover:-translate-y-1 transition-all duration-300 shadow-xl ${dynamicGlow}`}
+                  className={`group relative bg-neutral-900/30 border border-neutral-800/60 rounded-2xl p-3 md:p-4 flex flex-col gap-3 md:gap-4 hover:border-neutral-700/60 hover:-translate-y-1 transition-all duration-300 shadow-xl ${dynamicGlow}`}
                 >
                   {/* Contenedor de la Carátula física */}
                   <div className="aspect-square w-full bg-neutral-950 rounded-xl border border-neutral-800/40 flex items-center justify-center relative overflow-hidden">
@@ -91,28 +92,30 @@ export default function AlbumsPage() {
                     <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                   </div>
 
-                  {/* Detalles informativos */}
-                  <div className="flex flex-col pr-10"> {/* Añadimos padding-right para que el texto no choque con el botón */}
-                    <span className="text-[10px] font-bold text-[#D4AF37]/80 tracking-wider mb-0.5">
+                  {/* Detalles informativos (ajustados los tamaños de texto para que quepan en 2 columnas en celular) */}
+                  <div className="flex flex-col pr-8 md:pr-10">
+                    <span className="text-[10px] md:text-[11px] font-bold text-[#D4AF37]/80 tracking-wider mb-0.5">
                       {album.year || "Sin año"}
                     </span>
-                    <h3 className="text-base font-bold text-neutral-100 group-hover:text-white transition-colors truncate">
+                    <h3 className="text-sm md:text-base font-bold text-neutral-100 group-hover:text-white transition-colors truncate">
                       {album.title}
                     </h3>
-                    <p className="text-xs text-neutral-500 font-light mt-0.5">
+                    <p className="text-[10px] md:text-xs text-neutral-500 font-light mt-0.5">
                       {album.songs && album.songs.length > 0 
                         ? `${album.songs.length} canciones` 
                         : "0 canciones"}
                     </p>
                   </div>
 
-                  {/* BOTÓN AMARILLO DE PLAY INTERACTIVO -> CONECTADO A LA RUTA DINÁMICA */}
-                  <div className="absolute bottom-4 right-4 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-20">
-                    <div className="w-9 h-9 rounded-full bg-[#EAB308] text-black flex items-center justify-center font-bold shadow-md hover:scale-110 hover:bg-[#F3F5A8] transition-all">
+                  {/* BOTÓN AMARILLO DE PLAY INTERACTIVO */}
+                  {/* Móvil: opacity-100 (siempre visible). PC (md:): opacity-0 (se oculta y aparece en hover) */}
+                  <div 
+                    className="absolute bottom-3 right-3 md:bottom-4 md:right-4 opacity-100 scale-100 md:opacity-0 md:scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-20"
+                  >
+                    <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#EAB308] text-black flex items-center justify-center font-bold shadow-md hover:scale-110 hover:bg-[#F3F5A8] transition-all">
                       <FaPlay className="text-[10px] ml-0.5" />
                     </div>
                   </div>
-
                 </Link>
               );
             })}

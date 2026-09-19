@@ -148,9 +148,10 @@ export default function Home() {
               const dynamicGlow = albumGlowColors[album.title] || "hover:shadow-2xl hover:shadow-yellow-600/40";
 
               return (
-                <div 
+                <Link 
+                  href={`/albums/${album.id}`}
                   key={album.id}
-                  className={`group relative bg-neutral-900/30 border border-neutral-800/60 rounded-2xl p-5 flex flex-col gap-4 hover:border-neutral-700/60 hover:-translate-y-1 transition-all duration-300 shadow-xl ${dynamicGlow}`}
+                  className={`group relative bg-neutral-900/30 border border-neutral-800/60 rounded-2xl p-4 flex flex-col gap-4 hover:border-neutral-700/60 hover:-translate-y-1 transition-all duration-300 shadow-xl ${dynamicGlow}`}
                 >
                   {/* Contenedor de la carátula */}
                   <div className="aspect-square w-full bg-neutral-950 rounded-xl border border-neutral-800/40 flex items-center justify-center relative overflow-hidden">
@@ -164,28 +165,28 @@ export default function Home() {
                   </div>
 
                   {/* Información extraída de las columnas de Supabase */}
-                  <div className="flex flex-col">
+                  <div className="flex flex-col pr-12">
                     <span className="text-xs font-bold text-[#D4AF37]/80 tracking-wider mb-1">
                       {album.year || "Sin año"}
                     </span>
-                    <h3 className="text-lg font-bold text-neutral-100 group-hover:text-white transition-colors">
+                    <h3 className="text-base md:text-lg font-bold text-neutral-100 group-hover:text-white transition-colors">
                       {album.title}
                     </h3>
-                    <p className="text-sm text-neutral-500 font-light mt-0.5">
+                    <p className="text-xs md:text-sm text-neutral-500 font-light mt-0.5">
                       {album.songs ? `${album.songs.length} canciones` : "0 canciones"}
                     </p>
                   </div>
 
-                  {/* Botón flotante interactivo */}
-                  <Link href={`/albums/${album.id}`}
-                    className="absolute bottom-5 right-5 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-20"
+                  {/* Botón flotante interactivo (siempre visible en celular, oculto en PC hasta hacer hover) */}
+                  <div 
+                    className="absolute bottom-4 right-4 md:bottom-5 md:right-5 opacity-100 scale-100 md:opacity-0 md:scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-20"
                   >
-                    <div className="w-10 h-10 rounded-full bg-[#EAB308] text-black flex items-center justify-center font-bold text-sm shadow-md hover:scale-110 transition-transform cursor-pointer">
-                      <FaPlay className="text-xs ml-0.5" />
+                    <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#EAB308] text-black flex items-center justify-center font-bold text-sm shadow-md hover:scale-110 transition-transform cursor-pointer">
+                      <FaPlay className="text-[10px] md:text-xs ml-0.5" />
                     </div>
-                  </Link>
+                  </div>
 
-                </div>
+                </Link>
               );
             })}
           </div>

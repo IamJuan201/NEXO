@@ -76,14 +76,13 @@ export default function AlbumDetail() {
   const isThisAlbumPlaying = currentSong && songs.some(s => s.id === currentSong.id);
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12 text-white">
+    <div className="w-full max-w-6xl mx-auto px-6 py-12 flex flex-col gap-6 lg:grid lg:grid-cols-3 lg:gap-12 text-white">
       
       {/* COLUMNA IZQUIERDA: TOCADISCOS CIRCULAR EXCLUSIVO */}
-      <div className="lg:col-span-1 flex flex-col items-center bg-neutral-900/20 border border-neutral-800/50 rounded-3xl p-6 h-fit sticky top-24">
-        <p className="text-xs text-[#D4AF37] tracking-widest uppercase font-bold mb-6">Reproduciendo ahora</p>
-        
-        {/* CONTENEDOR CENTRAL DEL TOCADISCOS */}
-        <div className="relative w-64 h-64 mb-8 flex items-center justify-center">
+      <div className="lg:col-span-1 flex flex-col items-center bg-neutral-950 border border-neutral-800/50 rounded-3xl p-4 lg:p-6 h-fit sticky top-20 lg:top-24 z-30">
+        <p className="text-xs text-[#D4AF37] tracking-widest uppercase font-bold mb-2 lg:mb-6">Reproduciendo ahora</p>
+
+        <div className="relative w-36 h-36 mb-3 lg:w-64 lg:h-64 lg:mb-8 flex items-center justify-center">
           
           {/* EL DISCO DE VINILO GRANDE (Gira sobre su propio eje y congela su ángulo al pausar) */}
           <div
@@ -119,7 +118,7 @@ export default function AlbumDetail() {
             <img 
               src="/tonearm.png" 
               alt="Brazo del Tocadiscos" 
-              className="w-full h-full object-contain drop-shadow-[4px_10px_8px_rgba(0,0,0,0.5)]"
+              className="absolute -top-4 -right-2 w-20 h-20 lg:-top-6 lg:-right-4 lg:w-32 lg:h-32 z-20 pointer-events-none transition-transform duration-500 origin-top-right"
             />
           </div>
 
