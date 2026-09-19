@@ -50,6 +50,13 @@ export default function AlbumDetail() {
     }
   };
 
+  const handleVinylClick = () => {
+  if (songs.length === 0) return;
+
+  const songToPlay = isThisAlbumPlaying ? currentSong : songs[0];
+  handlePlaySong(songToPlay);
+  };
+
   const toggleLike = (songId: string, e: React.MouseEvent) => {
     e.stopPropagation(); // Evita que se pause la canción al interactuar con el corazón
     setLikedSongs(prev => ({ ...prev, [songId]: !prev[songId] }));
@@ -79,22 +86,23 @@ export default function AlbumDetail() {
         <div className="relative w-64 h-64 mb-8 flex items-center justify-center">
           
           {/* EL DISCO DE VINILO GRANDE (Gira sobre su propio eje y congela su ángulo al pausar) */}
-          <div 
-            className="relative w-full h-full flex items-center justify-center animate-[spin_8s_linear_infinite]"
-            style={{ animationPlayState: isThisAlbumPlaying && isPlaying ? "running" : "paused" }}
-          >
+          <div
+              onClick={handleVinylClick}
+              className="relative w-full h-full flex items-center justify-center cursor-pointer animate-[spin_8s_linear_infinite]"
+              style={{ animationPlayState: isThisAlbumPlaying && isPlaying ? "running" : "paused" }}
+            >
             {/* Imagen del vinilo local de fondo */}
             <img 
-              src={isThisAlbumPlaying ? activeVinyl : "/images/vinilos/ThrillerVinyl.png"} 
-              alt="Disco de Vinilo" 
+              src={activeVinyl}
+              alt="Disco de Vinilo"
               className={`w-full h-full object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.7)] transition-opacity duration-500 
-                ${isThisAlbumPlaying ? "opacity-100" : "opacity-20"}`}
+              ${isThisAlbumPlaying ? "opacity-100" : "opacity-20"}`}
             />
 
             {/* MINI CARÁTULA EN EL CENTRO DEL VINILO (Gira junto con el disco) */}
             <div className="absolute w-[26%] h-[26%] rounded-full overflow-hidden border border-black/40 z-10 bg-neutral-950">
               <img 
-                src={album?.cover_url || "https://unsplash.com"} 
+                src={album?.cover_url || ""} 
                 alt="" 
                 className="w-full h-full object-cover rounded-full"
               />
@@ -139,13 +147,13 @@ export default function AlbumDetail() {
                 className={`group flex flex-col border-b border-neutral-800/40 hover:bg-neutral-900/40 transition-all duration-300 ${isSelected ? 'bg-neutral-900/40' : ''}`}
               >
                 {/* FILA DE LA CANCIÓN */}
-                <div onClick={() => handlePlaySong(song)} className="flex items-center justify-between p-4 cursor-pointer">
+                <div onClick={() => handlePlaySong(song)} className="flex items-center justify-between py-4 pr-4 pl-10 cursor-pointer">
                   <div className="flex items-center gap-4">
                     <div className="relative w-12 h-12 flex items-center shrink-0">
                       {/* Mini vinilo local saliendo a la izquierda */}
                       <div 
-                        className={`absolute top-1 -left-2 w-10 h-10 transition-all duration-500 pointer-events-none z-0 animate-[spin_3s_linear_infinite]
-                          ${isSelected ? "-translate-x-4 opacity-100" : "translate-x-0 opacity-0 group-hover:opacity-60 group-hover:-translate-x-2"}`}
+                        className={`absolute top-1 left-0 w-10 h-10 transition-all duration-500 pointer-events-none z-0 animate-[spin_3s_linear_infinite]
+                          ${isSelected ? "-translate-x-6 opacity-100" : "translate-x-0 opacity-0 group-hover:opacity-60 group-hover:-translate-x-2"}`}
                         style={{ animationPlayState: isSelected && isPlaying ? "running" : "paused" }}
                       >
                         <img src={activeVinyl} alt="" className="w-full h-full object-contain" />

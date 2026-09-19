@@ -66,7 +66,7 @@ export default function AlbumsPage() {
         {/* ESTADO DE CARGA */}
         {loading ? (
           <div className="text-center py-32 text-sm text-neutral-500 font-light tracking-wide animate-pulse">
-            Sincronizando discografía con Supabase...
+            Sincronizando discografía...
           </div>
         ) : (
           /* CUADRÍCULA DE TODAS LAS CARÁTULAS */
@@ -75,7 +75,8 @@ export default function AlbumsPage() {
               const dynamicGlow = albumGlowColors[album.title] || "hover:shadow-2xl hover:shadow-yellow-600/20";
 
               return (
-                <div 
+                <Link
+                  href={`/albums/${album.id}`} 
                   key={album.id}
                   className={`group relative bg-neutral-900/30 border border-neutral-800/60 rounded-2xl p-4 flex flex-col gap-4 hover:border-neutral-700/60 hover:-translate-y-1 transition-all duration-300 shadow-xl ${dynamicGlow}`}
                 >
@@ -106,16 +107,13 @@ export default function AlbumsPage() {
                   </div>
 
                   {/* BOTÓN AMARILLO DE PLAY INTERACTIVO -> CONECTADO A LA RUTA DINÁMICA */}
-                  <Link 
-                    href={`/albums/${album.id}`}
-                    className="absolute bottom-4 right-4 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-20"
-                  >
-                    <div className="w-9 h-9 rounded-full bg-[#EAB308] text-black flex items-center justify-center font-bold shadow-md hover:scale-110 hover:bg-[#F3F5A8] transition-all cursor-pointer">
+                  <div className="absolute bottom-4 right-4 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-20">
+                    <div className="w-9 h-9 rounded-full bg-[#EAB308] text-black flex items-center justify-center font-bold shadow-md hover:scale-110 hover:bg-[#F3F5A8] transition-all">
                       <FaPlay className="text-[10px] ml-0.5" />
                     </div>
-                  </Link>
+                  </div>
 
-                </div>
+                </Link>
               );
             })}
           </div>
