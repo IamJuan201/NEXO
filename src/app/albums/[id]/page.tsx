@@ -150,10 +150,12 @@ export default function AlbumDetail() {
                 key={song.id}
                 className={`group flex flex-col border-b border-neutral-800/40 hover:bg-neutral-900/40 transition-all duration-300 ${isSelected ? 'bg-neutral-900/40' : ''}`}
               >
+
                 {/* FILA DE LA CANCIÓN */}
                 <div onClick={() => handlePlaySong(song)} className="flex items-center justify-between py-4 pr-4 pl-10 cursor-pointer">
                   <div className="flex items-center gap-4">
                     <div className="relative w-12 h-12 flex items-center shrink-0">
+                      
                       {/* Mini vinilo local saliendo a la izquierda */}
                       <div 
                         className={`absolute top-1 left-0 w-10 h-10 transition-all duration-500 pointer-events-none z-0 animate-[spin_3s_linear_infinite]
