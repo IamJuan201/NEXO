@@ -86,10 +86,10 @@ export default function AlbumDetail() {
           
           {/* EL DISCO DE VINILO GRANDE (Gira sobre su propio eje y congela su ángulo al pausar) */}
           <div
-              onClick={handleVinylClick}
-              className="relative w-full h-full flex items-center justify-center cursor-pointer animate-[spin_8s_linear_infinite]"
-              style={{ animationPlayState: isThisAlbumPlaying && isPlaying ? "running" : "paused" }}
-            >
+            onClick={handleVinylClick}
+            className="relative w-full h-full flex items-center justify-center cursor-pointer animate-[spin_8s_linear_infinite]"
+            style={{ animationPlayState: isThisAlbumPlaying && isPlaying ? "running" : "paused" }}
+          >
             {/* Imagen del vinilo local de fondo */}
             <img 
               src={activeVinyl}
@@ -110,15 +110,20 @@ export default function AlbumDetail() {
             </div>
           </div>
 
-          {/* EL BRAZO DEL TOCADISCOS (Estático, la aguja rota hacia adentro al dar Play) */}
+          {/* EL BRAZO DEL TOCADISCOS (Tamaño incrementado y posición calibrada) */}
           <div 
-            className="absolute -top-6 -right-4 w-32 h-32 z-20 pointer-events-none transition-transform duration-500 origin-top-right"
-            style={{ transform: isThisAlbumPlaying && isPlaying ? "rotate(-2deg)" : "rotate(-24deg) translateX(8px)" }}
+            className="absolute z-20 pointer-events-none transition-transform duration-500 origin-top-right
+              -top-4 -right-3 w-19 h-19
+              lg:-top-8 lg:-right-6 lg:w-37.5 lg:h-37.5"
+            style={{ 
+              // Calibramos la rotación para compensar el nuevo tamaño y que la aguja caiga en el punto exacto
+              transform: isThisAlbumPlaying && isPlaying ? "rotate(1deg)" : "rotate(-20deg) translateX(4px)" 
+            }}
           >
             <img 
               src="/tonearm.png" 
               alt="Brazo del Tocadiscos" 
-              className="absolute -top-4 -right-2 w-20 h-20 lg:-top-6 lg:-right-4 lg:w-32 lg:h-32 z-20 pointer-events-none transition-transform duration-500 origin-top-right"
+              className="w-full h-full object-contain drop-shadow-[4px_12px_10px_rgba(0,0,0,0.45)]"
             />
           </div>
 
