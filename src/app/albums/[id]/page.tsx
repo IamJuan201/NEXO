@@ -5,18 +5,15 @@ import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { FaPlay, FaPause, FaHeart, FaBackwardStep, FaForwardStep, FaVolumeHigh } from "react-icons/fa6";
 import { useAudio } from "@/context/AudioContext"; 
+import { useArtist } from "@/context/ArtistContext";
 
-// Mapeador corregido con base en las etiquetas de Supabase y tus archivos locales en public
-const vinylImages: Record<string, string> = {
-  "Thriller": "/images/vinilos/ThrillerVinyl.png",
-  "Bad": "/images/vinilos/BadVinyl.png",
-  "Dangerous": "/images/vinilos/DangerousVinyl.png",
-  "Invincible": "/images/vinilos/InvincibleVinyl.png",
-  "Of the Wall": "/images/vinilos/OfftheWallVinyl.png",
-};
+// Fallback image in case the specific vinyl image is missing
+const DEFAULT_VINYL = "/images/vinilos/Vinyl.png";
 
 export default function AlbumDetail() {
   const { id } = useParams();
+  const { currentArtist } = useArtist();
+  
   const [album, setAlbum] = useState<any>(null);
   const [songs, setSongs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,6 +24,20 @@ export default function AlbumDetail() {
 
   useEffect(() => {
     async function fetchAlbumAndSongs() {
+      setLoading(true);
+      
+      if (!currentArtist.useSupabase) {
+        // Buscar en los mockAlbums del artista activo
+        const mockAlbum = currentArtist.mockAlbums.find(a => a.id === id);
+        if (mockAlbum) {
+          setAlbum(mockAlbum);
+          setSongs(mockAlbum.songs);
+        }
+        setLoading(false);
+        return;
+      }
+
+      // Si usa Supabase
       try {
         const { data: albumData } = await supabase.from("albums").select("*").eq("id", id).single();
         const { data: songsData } = await supabase.from("songs").select("*").eq("album_id", id).order("track_number", { ascending: true });
@@ -39,8 +50,9 @@ export default function AlbumDetail() {
         setLoading(false);
       }
     }
+    
     if (id) fetchAlbumAndSongs();
-  }, [id]);
+  }, [id, currentArtist]);
 
   const handlePlaySong = (song: any) => {
     if (currentSong?.id === song.id && isPlaying) {
@@ -51,10 +63,10 @@ export default function AlbumDetail() {
   };
 
   const handleVinylClick = () => {
-  if (songs.length === 0) return;
+    if (songs.length === 0) return;
 
-  const songToPlay = isThisAlbumPlaying ? currentSong : songs[0];
-  handlePlaySong(songToPlay);
+    const songToPlay = isThisAlbumPlaying ? currentSong : songs[0];
+    handlePlaySong(songToPlay);
   };
 
   const toggleLike = (songId: string, e: React.MouseEvent) => {
@@ -70,21 +82,37 @@ export default function AlbumDetail() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  if (loading) return <div className="text-center py-20 text-neutral-500 animate-pulse">Cargando canciones...</div>;
+  if (loading) return <div className="text-center py-20 text-neutral-500 animate-pulse">Cargando pistas...</div>;
 
-  const activeVinyl = album ? vinylImages[album.title] || "/images/vinilos/ThrillerVinyl.png" : "/images/vinilos/ThrillerVinyl.png";
+  // Usa la imagen específica si existe, sino un fallback
+  // Nota: Deberías agregar un mapeo para The Weeknd también si tienes imágenes de vinilo específicas.
+  const vinylImages: Record<string, string> = {
+    "Thriller": "/images/vinilos/ThrillerVinyl.png",
+    "Bad": "/images/vinilos/BadVinyl.png",
+    "Dangerous": "/images/vinilos/DangerousVinyl.png",
+    "Invincible": "/images/vinilos/InvincibleVinyl.png",
+    "Of the Wall": "/images/vinilos/OfftheWallVinyl.png",
+    "Off the Wall": "/images/vinilos/OfftheWallVinyl.png", // Corrección del typo
+  };
+
+  const activeVinyl = album ? vinylImages[album.title] || DEFAULT_VINYL : DEFAULT_VINYL;
   const isThisAlbumPlaying = currentSong && songs.some(s => s.id === currentSong.id);
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-6 py-12 flex flex-col gap-6 lg:grid lg:grid-cols-3 lg:gap-12 text-white">
+    <div className="w-full max-w-6xl mx-auto px-6 py-12 flex flex-col gap-6 lg:grid lg:grid-cols-3 lg:gap-12 text-white transition-colors duration-700">
       
       {/* COLUMNA IZQUIERDA: TOCADISCOS CIRCULAR EXCLUSIVO */}
-      <div className="lg:col-span-1 flex flex-col items-center bg-neutral-950 border border-neutral-800/50 rounded-3xl p-4 lg:p-6 h-fit sticky top-20 lg:top-24 z-30">
-        <p className="text-xs text-[#D4AF37] tracking-widest uppercase font-bold mb-2 lg:mb-6">Reproduciendo ahora</p>
+      <div className="lg:col-span-1 flex flex-col items-center bg-neutral-950/80 backdrop-blur-sm border border-neutral-800/50 rounded-3xl p-4 lg:p-6 h-fit sticky top-20 lg:top-24 z-30 transition-all duration-700 hover:border-neutral-700/50">
+        <p 
+          className="text-xs tracking-widest uppercase font-bold mb-2 lg:mb-6 transition-colors duration-500"
+          style={{ color: currentArtist.primaryColor }}
+        >
+          Reproduciendo ahora
+        </p>
 
         <div className="relative w-36 h-36 mb-3 lg:w-64 lg:h-64 lg:mb-8 flex items-center justify-center">
           
-          {/* EL DISCO DE VINILO GRANDE (Gira sobre su propio eje y congela su ángulo al pausar) */}
+          {/* EL DISCO DE VINILO GRANDE */}
           <div
             onClick={handleVinylClick}
             className="relative w-full h-full flex items-center justify-center cursor-pointer animate-[spin_8s_linear_infinite]"
@@ -98,7 +126,7 @@ export default function AlbumDetail() {
               ${isThisAlbumPlaying ? "opacity-100" : "opacity-20"}`}
             />
 
-            {/* MINI CARÁTULA EN EL CENTRO DEL VINILO (Gira junto con el disco) */}
+            {/* MINI CARÁTULA EN EL CENTRO DEL VINILO */}
             <div className="absolute w-[26%] h-[26%] rounded-full overflow-hidden border border-black/40 z-10 bg-neutral-950">
               <img 
                 src={album?.cover_url || ""} 
@@ -110,13 +138,12 @@ export default function AlbumDetail() {
             </div>
           </div>
 
-          {/* EL BRAZO DEL TOCADISCOS (Tamaño incrementado y posición calibrada) */}
+          {/* EL BRAZO DEL TOCADISCOS */}
           <div 
             className="absolute z-20 pointer-events-none transition-transform duration-500 origin-top-right
               -top-4 -right-3 w-19 h-19
               lg:-top-8 lg:-right-6 lg:w-37.5 lg:h-37.5"
             style={{ 
-              // Calibramos la rotación para compensar el nuevo tamaño y que la aguja caiga en el punto exacto
               transform: isThisAlbumPlaying && isPlaying ? "rotate(1deg)" : "rotate(-20deg) translateX(4px)" 
             }}
           >
@@ -139,9 +166,14 @@ export default function AlbumDetail() {
 
       {/* COLUMNA DERECHA: LISTADO DE CANCIONES */}
       <div className="lg:col-span-2 flex flex-col gap-4">
-        <h2 className="text-2xl font-black tracking-tight text-[#D4AF37] mb-2">{album?.title}</h2>
+        <h2 
+          className="text-2xl font-black tracking-tight mb-2 transition-colors duration-500"
+          style={{ color: currentArtist.primaryColor }}
+        >
+          {album?.title}
+        </h2>
         
-        <div className="flex flex-col border border-neutral-800/60 bg-neutral-900/10 rounded-2xl overflow-hidden">
+        <div className="flex flex-col border border-neutral-800/60 bg-neutral-900/10 rounded-2xl overflow-hidden transition-all duration-700">
           {songs.map((song) => {
             const isSelected = currentSong?.id === song.id;
             
@@ -170,12 +202,12 @@ export default function AlbumDetail() {
                     </div>
 
                     <div className="flex flex-col ml-2">
-                      <span className="text-sm font-semibold text-neutral-200 group-hover:text-white">{song.title}</span>
-                      <span className="text-xs text-neutral-500">Pista {song.track_number}</span>
+                      <span className="text-sm font-semibold text-neutral-200 group-hover:text-white transition-colors">{song.title}</span>
+                      <span className="text-xs text-neutral-500 transition-colors">Pista {song.track_number}</span>
                     </div>
                   </div>
 
-                  {/* Duración (Oculta al seleccionarse para no amontonar la vista) */}
+                  {/* Duración */}
                   {!isSelected && (
                     <span className="text-xs font-mono text-neutral-500">
                       {Math.floor(song.duration / 60)}:{(song.duration % 60).toString().padStart(2, '0')}
@@ -183,8 +215,8 @@ export default function AlbumDetail() {
                   )}
                 </div>
 
-                {/* CONSOLA DESPLEGABLE MINI CON CONTROLES (Estilo Spotify) */}
-                                {isSelected && (
+                {/* CONSOLA DESPLEGABLE MINI CON CONTROLES */}
+                {isSelected && (
                   <div className="px-14 pb-5 pt-1 flex flex-col gap-4 w-full max-w-xl mx-auto">
                     <div className="flex items-center gap-3 w-full">
                       <span className="text-[10px] font-mono text-neutral-400 min-w-7 text-right">
@@ -197,7 +229,8 @@ export default function AlbumDetail() {
                         max={duration || 100}
                         value={currentTime}
                         onChange={(e) => seekSong(Number(e.target.value))}
-                        className="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#EAB308] hover:h-1.5 transition-all outline-none"
+                        className="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer hover:h-1.5 transition-all outline-none"
+                        style={{ accentColor: currentArtist.secondaryColor }}
                       />
 
                       <span className="text-[10px] font-mono text-neutral-400 min-w-7">
@@ -219,7 +252,8 @@ export default function AlbumDetail() {
 
                       <button
                         onClick={() => handlePlaySong(song)}
-                        className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        className="w-10 h-10 rounded-full text-black flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        style={{ backgroundColor: currentArtist.primaryColorLight }}
                       >
                         {isPlaying ? <FaPause /> : <FaPlay className="ml-0.5" />}
                       </button>

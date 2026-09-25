@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { AudioProvider } from "@/context/AudioContext";
+import { ArtistProvider } from "@/context/ArtistContext";
+import BackgroundBlobs from "@/components/layout/BackgroundBlobs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,26 +28,31 @@ const cinzel = Cinzel({
   variable: '--font-cinzel',
 })
 
-
 export const metadata: Metadata = {
-  title: "MJMusic",
-  description: "Una pagina de practica para escuchar musica",
+  title: "Music Platform",
+  description: "Plataforma multi-artista de música",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${cinzel.variable}`}>
-      <body className="min-h-screen font-sans flex flex-col bg-neutral-950 text-neutral-50 antialiased m-0 p-0 relative overflow-x-hidden">
-          
-        <div className="absolute top-[-20%] left-[-10%] w-125 h-125 bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute top-[20%] right-[-10%] w-100 h-100 bg-[#D4AF37]/5 rounded-full blur-[100px] pointer-events-none"></div>
-        <AudioProvider>
-          <Navbar />
+    <html lang="es" className={`${inter.variable} ${cinzel.variable}`}>
+      <body className="min-h-screen font-sans flex flex-col bg-neutral-950 text-neutral-50 antialiased m-0 p-0 relative overflow-x-hidden transition-colors duration-700">
+        <ArtistProvider>
+          <AudioProvider>
+            
+            {/* Luces de fondo dinámicas */}
+            <BackgroundBlobs />
+            
+            <Navbar />
 
-          <main className="grow">{children}</main>
-          
-          <Footer />
-        </AudioProvider>
+            <main className="grow z-10 relative transition-all duration-700 ease-in-out">
+              {children}
+            </main>
+            
+            <Footer />
+            
+          </AudioProvider>
+        </ArtistProvider>
       </body>
     </html>
   );
