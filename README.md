@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NEXO
 
-## Getting Started
+Plataforma de descubrimiento y escucha musical para explorar artistas y crear tu propia selección.
 
-First, run the development server:
+## Acerca del proyecto
+
+NEXO es un proyecto personal en desarrollo. La idea es ofrecer una experiencia musical centrada en descubrir artistas y escuchar música, para que cada persona pueda encontrar lo que le gusta y crear su propia selección.
+
+## Tecnologías
+
+- Next.js
+- TypeScript
+- Supabase
+
+## Instalación
+
+Necesitas tener Node.js y npm instalados.
 
 ```bash
+git clone <URL_DE_TU_REPOSITORIO>
+cd nexo-music
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> Abre http://localhost:3000 en tu navegador.
+> Si el proyecto necesita variables de entorno para conectarse a Supabase, tendrás que configurarlas en un archivo .env.local. Nunca publiques claves privadas en GitHub.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Créditos
 
-To learn more about Next.js, take a look at the following resources:
+Los créditos de música, imágenes y otros recursos se añadirán cuando confirmemos cuáles utiliza el proyecto.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Desarrollado por [IamJuan201].
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estado
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### En desarrollo.
