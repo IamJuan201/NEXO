@@ -23,7 +23,7 @@ npm install
 npm run dev
 ```
 
-> [!IMPORTANTE]
+> [!IMPORTANT]
 > Abre http://localhost:3000 en tu navegador.
 > Si el proyecto necesita variables de entorno para conectarse a Supabase, tendrás que configurarlas en un archivo .env.local. Nunca publiques claves privadas en GitHub.
 
